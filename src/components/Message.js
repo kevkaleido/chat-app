@@ -1,22 +1,22 @@
 // src/components/Message.js
 
-import React from 'react'; // Import React library
-import styled from 'styled-components'; // Import styled-components for styling
+import React from 'react';
+import styled from 'styled-components';
 
-const MessageContainer = styled.div` // Styled component for Message container
+const MessageContainer = styled.div`
   background-color: #f1f1f1;
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 5px;
 `;
 
-const Message = () => {
+const Message = ({ message }) => { // Receive message as a prop
   return (
     <MessageContainer>
-      <p><strong>User:</strong> Message content</p> {/* Message content */}
-      <span>Timestamp</span> {/* Message timestamp */}
+      <p><strong>{message.user}:</strong> {message.text}</p>
+      <span>{new Date(message.timestamp).toLocaleTimeString()}</span>
     </MessageContainer>
   );
 };
 
-export default Message; // Export Message component as default
+export default Message;

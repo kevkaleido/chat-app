@@ -1,26 +1,26 @@
 // src/components/ChatWindow.js
 
-import React from 'react'; // Import React library
-import styled from 'styled-components'; // Import styled-components for styling
-import UserList from './UserList'; // Import UserList component
-import MessageList from './MessageList'; // Import MessageList component
-import MessageInput from './MessageInput'; // Import MessageInput component
+import React from 'react';
+import styled from 'styled-components';
+import UserList from './UserList';
+import MessageList from './MessageList';
+import MessageInput from './MessageInput';
 
-const ChatWindowContainer = styled.div` // Styled component for ChatWindow container
+const ChatWindowContainer = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
   padding: 10px;
 `;
 
-const ChatWindow = () => {
+const ChatWindow = ({ user }) => { // Receive user as a prop
   return (
     <ChatWindowContainer>
-      <UserList /> {/* Render UserList component */}
-      <MessageList /> {/* Render MessageList component */}
-      <MessageInput /> {/* Render MessageInput component */}
+      <UserList />
+      <MessageList />
+      <MessageInput user={user} /> {/* Pass user to MessageInput */}
     </ChatWindowContainer>
   );
 };
 
-export default ChatWindow; // Export ChatWindow component as default
+export default ChatWindow;

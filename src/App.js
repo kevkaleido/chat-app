@@ -1,46 +1,46 @@
 // src/App.js
 
-import React, { useState, useEffect } from 'react'; // Import React, useState and useEffect hooks
-import { auth } from './firebase'; // Import Firebase auth
-import Header from './components/Header'; // Import Header component
-import Sidebar from './components/Sidebar'; // Import Sidebar component
-import ChatWindow from './components/ChatWindow'; // Import ChatWindow component
-import SignUp from './components/SignUp'; // Import SignUp component
-import Login from './components/Login'; // Import Login component
+import React, { useState, useEffect } from 'react';
+import { auth } from './firebase';
+import Header from './components/Header';
+import Sidebar from './components/Sidebar';
+import ChatWindow from './components/ChatWindow';
+import SignUp from './components/SignUp';
+import Login from './components/Login';
 
 const App = () => {
-  const [user, setUser] = useState(null); // State for the authenticated user
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        setUser(user); // Set user state if authenticated
+        setUser(user);
       } else {
-        setUser(null); // Clear user state if not authenticated
+        setUser(null);
       }
     });
 
-    return () => unsubscribe(); // Cleanup subscription on unmount
+    return () => unsubscribe();
   }, []);
 
   return (
     <div className="app">
-      {user ? ( // Conditionally render based on user authentication state
+      {user ? (
         <>
-          <Header /> {/* Render Header component */}
+          <Header />
           <div className="main">
-            <Sidebar /> {/* Render Sidebar component */}
-            <ChatWindow /> {/* Render ChatWindow component */}
+            <Sidebar />
+            <ChatWindow user={user} /> {/* Pass user to ChatWindow */}
           </div>
         </>
       ) : (
         <>
-          <SignUp /> {/* Render SignUp component */}
-          <Login /> {/* Render Login component */}
+          <SignUp />
+          <Login />
         </>
       )}
     </div>
   );
 };
 
-export default App; // Export App component as default
+export default App;
