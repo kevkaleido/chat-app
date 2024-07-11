@@ -1,21 +1,22 @@
 // src/components/MessageInput.js
 
-import React, { useState } from 'react'; // Import React and useState hook
-import styled from 'styled-components'; // Import styled-components for styling
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { db } from '../firebase';  // Correct import for Firestore
 
-const MessageInputContainer = styled.div` // Styled component for MessageInput container
+const MessageInputContainer = styled.div`
   display: flex;
   margin-top: 10px;
 `;
 
-const Input = styled.input` // Styled component for input field
+const Input = styled.input`
   flex: 1;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
 `;
 
-const Button = styled.button` // Styled component for button
+const Button = styled.button`
   padding: 10px;
   margin-left: 10px;
   background-color: #3f51b5;
@@ -24,11 +25,19 @@ const Button = styled.button` // Styled component for button
   border-radius: 4px;
 `;
 
-const MessageInput = () => {
-  const [message, setMessage] = useState(''); // State for message input
+const MessageInput = ({ user }) => {
+  const [message, setMessage] = useState('');
 
-  const handleSendMessage = () => {
-    // Implement message sending logic here
+  const handleSendMessage = async () => {
+    if (message.trim()) {
+      await db.collection('messages').add({
+        text: message,
+        createdAt: new Date(),
+        uid: user.uid,
+        displayName: user.displayName,
+      });
+      setMessage('');
+    }
   };
 
   return (
@@ -36,12 +45,12 @@ const MessageInput = () => {
       <Input
         type="text"
         value={message}
-        onChange={(e) => setMessage(e.target.value)} // Update message state on input change
-        placeholder="Type a message" // Input placeholder
+        onChange={(e) => setMessage(e.target.value)}
+        placeholder="Type a message"
       />
-      <Button onClick={handleSendMessage}>Send</Button> {/* Send button */}
+      <Button onClick={handleSendMessage}>Send</Button>
     </MessageInputContainer>
   );
 };
 
-export default MessageInput; // Export MessageInput component as default
+export default MessageInput;

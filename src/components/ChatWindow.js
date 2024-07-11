@@ -2,23 +2,21 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import UserList from './UserList';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
 
 const ChatWindowContainer = styled.div`
+  flex: 1;
   display: flex;
   flex-direction: column;
-  flex: 1;
-  padding: 10px;
+  height: 100vh;
 `;
 
-const ChatWindow = ({ user }) => { // Receive user as a prop
+const ChatWindow = ({ user }) => {
   return (
     <ChatWindowContainer>
-      <UserList />
       <MessageList />
-      <MessageInput user={user} /> {/* Pass user to MessageInput */}
+      <MessageInput user={user} />
     </ChatWindowContainer>
   );
 };
