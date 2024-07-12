@@ -38,7 +38,7 @@ const MessageInput = ({ user }) => {
         user: user.email,
         createdAt: new Date(),
       });
-      setMessage('');
+      setMessage(''); // Clear the input field after sending the message
     } catch (error) {
       console.error('Error adding message: ', error);
     }
@@ -58,4 +58,3 @@ const MessageInput = ({ user }) => {
 };
 
 export default MessageInput;
-  

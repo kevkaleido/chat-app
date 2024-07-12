@@ -1,9 +1,7 @@
-// src/components/Header.js
+import React from 'react';
+import styled from 'styled-components';
 
-import React from 'react'; // Import React library
-import styled from 'styled-components'; // Import styled-components for styling
-
-const HeaderContainer = styled.div` // Styled component for Header container
+const HeaderContainer = styled.div`
   background-color: #3f51b5;
   color: white;
   padding: 10px;
@@ -13,9 +11,9 @@ const HeaderContainer = styled.div` // Styled component for Header container
 const Header = () => {
   return (
     <HeaderContainer>
-      <h1>Chat Room</h1> {/* Header title */}
+      <h1>Y o👌</h1>
     </HeaderContainer>
   );
 };
 
-export default Header; // Export Header component as default
+export default Header;
