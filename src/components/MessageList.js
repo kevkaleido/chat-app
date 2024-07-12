@@ -1,67 +1,41 @@
 // src/components/MessageList.js
 
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import { db } from '../firebase';
-import Message from './Message';
+import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
+import styled from 'styled-components';
 
-const MessageListContainer = styled.div`
+const ListContainer = styled.div`
   flex: 1;
   overflow-y: auto;
+`;
+
+const MessageItem = styled.div`
   padding: 10px;
-`;
-
-const LoadingMessage = styled.p`
-  text-align: center;
-  margin-top: 20px;
-`;
-
-const ErrorMessage = styled.p`
-  color: red;
-  text-align: center;
-  margin-top: 20px;
+  border-bottom: 1px solid #ccc;
 `;
 
 const MessageList = () => {
   const [messages, setMessages] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
 
   useEffect(() => {
-    const unsubscribe = db.collection('messages')
-      .orderBy('createdAt')
-      .onSnapshot(
-        snapshot => {
-          const messages = snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-          }));
-          setMessages(messages);
-          setLoading(false);
-        },
-        error => {
-          setError('Failed to load messages. Please try again.');
-          setLoading(false);
-        }
-      );
+    const q = query(collection(db, 'messages'), orderBy('createdAt', 'asc'));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const messages = snapshot.docs.map(doc => doc.data());
+      setMessages(messages);
+    });
 
-    return unsubscribe;
+    return () => unsubscribe();
   }, []);
 
-  if (loading) {
-    return <LoadingMessage>Loading messages...</LoadingMessage>;
-  }
-
-  if (error) {
-    return <ErrorMessage>{error}</ErrorMessage>;
-  }
-
   return (
-    <MessageListContainer>
-      {messages.map(message => (
-        <Message key={message.id} message={message} />
+    <ListContainer>
+      {messages.map((message, index) => (
+        <MessageItem key={index}>
+          <strong>{message.user}</strong>: {message.text}
+        </MessageItem>
       ))}
-    </MessageListContainer>
+    </ListContainer>
   );
 };
 
