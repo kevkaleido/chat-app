@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { db } from '../firebase';  // Correct import for Firestore
+import { db } from '../firebase';
 
 const MessageInputContainer = styled.div`
   display: flex;
@@ -25,18 +25,33 @@ const Button = styled.button`
   border-radius: 4px;
 `;
 
+const ErrorMessage = styled.p`
+  color: red;
+  margin-top: 10px;
+`;
+
 const MessageInput = ({ user }) => {
   const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSendMessage = async () => {
     if (message.trim()) {
-      await db.collection('messages').add({
-        text: message,
-        createdAt: new Date(),
-        uid: user.uid,
-        displayName: user.displayName,
-      });
-      setMessage('');
+      setLoading(true);
+      setError('');
+      try {
+        await db.collection('messages').add({
+          text: message,
+          createdAt: new Date(),
+          uid: user.uid,
+          displayName: user.displayName,
+        });
+        setMessage('');
+      } catch (error) {
+        setError('Failed to send message. Please try again.');
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -47,8 +62,12 @@ const MessageInput = ({ user }) => {
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         placeholder="Type a message"
+        disabled={loading}
       />
-      <Button onClick={handleSendMessage}>Send</Button>
+      <Button onClick={handleSendMessage} disabled={loading}>
+        {loading ? 'Sending...' : 'Send'}
+      </Button>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
     </MessageInputContainer>
   );
 };

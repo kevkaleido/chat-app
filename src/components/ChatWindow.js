@@ -13,9 +13,13 @@ const ChatWindowContainer = styled.div`
 `;
 
 const ChatWindow = ({ user }) => {
+  if (!user) {
+    return <p>Please log in to see the chat.</p>;
+  }
+
   return (
     <ChatWindowContainer>
-      <MessageList />
+      <MessageList user={user} />
       <MessageInput user={user} />
     </ChatWindowContainer>
   );

@@ -1,24 +1,24 @@
 // src/components/Login.js
 
-import React, { useState } from 'react'; // Import React and useState hook
-import { auth } from '../firebase'; // Import Firebase auth
-import styled from 'styled-components'; // Import styled-components for styling
+import React, { useState } from 'react';
+import { auth } from '../firebase';
+import styled from 'styled-components';
 
-const LoginContainer = styled.div` // Styled component for Login container
+const LoginContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
 `;
 
-const Input = styled.input` // Styled component for input fields
+const Input = styled.input`
   margin-bottom: 10px;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
 `;
 
-const Button = styled.button` // Styled component for button
+const Button = styled.button`
   padding: 10px;
   background-color: #3f51b5;
   color: white;
@@ -26,16 +26,23 @@ const Button = styled.button` // Styled component for button
   border-radius: 4px;
 `;
 
+const ErrorMessage = styled.p`
+  color: red;
+  margin-top: 10px;
+`;
+
 const Login = () => {
-  const [email, setEmail] = useState(''); // State for email input
-  const [password, setPassword] = useState(''); // State for password input
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const handleLogin = async () => {
+    setError('');
     try {
-      await auth.signInWithEmailAndPassword(email, password); // Firebase login method
+      await auth.signInWithEmailAndPassword(email, password);
       alert('User logged in successfully');
     } catch (error) {
-      alert(error.message); // Display error message if login fails
+      setError(error.message);
     }
   };
 
@@ -46,17 +53,18 @@ const Login = () => {
         type="email"
         placeholder="Email"
         value={email}
-        onChange={(e) => setEmail(e.target.value)} // Update email state on input change
+        onChange={(e) => setEmail(e.target.value)}
       />
       <Input
         type="password"
         placeholder="Password"
         value={password}
-        onChange={(e) => setPassword(e.target.value)} // Update password state on input change
+        onChange={(e) => setPassword(e.target.value)}
       />
-      <Button onClick={handleLogin}>Login</Button> {/* Login button */}
+      <Button onClick={handleLogin}>Login</Button>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
     </LoginContainer>
   );
 };
 
-export default Login; // Export Login component as default
+export default Login;

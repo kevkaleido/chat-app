@@ -1,7 +1,7 @@
 // src/App.js
 
 import React, { useState, useEffect } from 'react';
-import { auth } from './firebase';
+import { auth } from './firebase'; // Ensure correct import
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import ChatWindow from './components/ChatWindow';
@@ -30,7 +30,7 @@ const App = () => {
           <Header />
           <div className="main">
             <Sidebar />
-            <ChatWindow user={user} /> {/* Pass user to ChatWindow */}
+            <ChatWindow user={user} />
           </div>
         </>
       ) : (
