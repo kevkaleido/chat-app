@@ -1,7 +1,5 @@
-// src/components/Login.js
-
 import React, { useState } from 'react';
-import { auth } from '../firebase';
+import { auth, signInWithEmailAndPassword } from '../firebase'; // Ensure signInWithEmailAndPassword is imported
 import styled from 'styled-components';
 
 const LoginContainer = styled.div`
@@ -39,7 +37,7 @@ const Login = () => {
   const handleLogin = async () => {
     setError('');
     try {
-      await auth.signInWithEmailAndPassword(email, password);
+      await signInWithEmailAndPassword(auth, email, password); // Use the imported function correctly
       alert('User logged in successfully');
     } catch (error) {
       setError(error.message);
