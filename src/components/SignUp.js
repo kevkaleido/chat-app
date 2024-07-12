@@ -1,7 +1,7 @@
 // src/components/SignUp.js
 
 import React, { useState } from 'react';
-import { auth } from '../firebase';
+import { auth, createUserWithEmailAndPassword } from '../firebase';
 import styled from 'styled-components';
 
 const SignUpContainer = styled.div`
@@ -39,7 +39,7 @@ const SignUp = () => {
   const handleSignUp = async () => {
     setError('');
     try {
-      await auth.createUserWithEmailAndPassword(email, password);
+      await createUserWithEmailAndPassword(auth, email, password);
       alert('User registered successfully');
     } catch (error) {
       setError(error.message);
