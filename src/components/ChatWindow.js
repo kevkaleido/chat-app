@@ -59,7 +59,7 @@ const ChatWindow = ({ user }) => {
   return (
     <ChatWindowContainer>
       <Header>
-        <h2>Chat Room</h2>
+        <h2>Room</h2>
         <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
       </Header>
       <MessageList user={user} />

@@ -1,8 +1,6 @@
-// src/components/MessageInput.js
-
 import React, { useState } from 'react';
 import { db } from '../firebase';
-import { collection, addDoc } from 'firebase/firestore'; // Ensure collection is imported
+import { collection, addDoc } from 'firebase/firestore';
 import styled from 'styled-components';
 
 const InputContainer = styled.div`
@@ -29,27 +27,32 @@ const Button = styled.button`
 const MessageInput = ({ user }) => {
   const [message, setMessage] = useState('');
 
-  const sendMessage = async () => {
-    if (message.trim() === '') return;
+  const handleInputChange = (e) => {
+    setMessage(e.target.value);
+  };
 
+  const sendMessage = async () => {
+    if (!message.trim()) return; // Prevent sending empty messages
+  
     try {
       await addDoc(collection(db, 'messages'), {
         text: message,
         user: user.email,
         createdAt: new Date(),
       });
-      setMessage(''); // Clear the input field after sending the message
+      setMessage(''); // Clear the input field after sending
     } catch (error) {
       console.error('Error adding message: ', error);
     }
   };
+  
 
   return (
     <InputContainer>
       <Input
         type="text"
         value={message}
-        onChange={(e) => setMessage(e.target.value)}
+        onChange={handleInputChange} // Use a separate handler for input change
         placeholder="Type a message..."
       />
       <Button onClick={sendMessage}>Send</Button>
